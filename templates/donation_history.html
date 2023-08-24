@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <section class="donation-history">
+        <h2>Donation History</h2>
+        <ul>
+            {% for amount in current_user.donation_history %}
+                <li>{{ amount }}</li>
+            {% endfor %}
+        </ul>
+        <p>Total Donated: {{ current_user.total_donated }}</p>
+    </section>
+{% endblock %}

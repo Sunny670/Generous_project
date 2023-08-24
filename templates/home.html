@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <section class="hero">
+        <h2>Welcome to Generous Givers</h2>
+        <p>Help those in remote areas affected by drought through your generous donations.</p>
+        <a href="{{ url_for('donation.donate') }}" class="button">Make a Donation</a>
+    </section>
+{% endblock %}

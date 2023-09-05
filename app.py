@@ -1,6 +1,28 @@
-from flask import Flask, render_template, url_for
+import os
 
+from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, flash, redirect, render_template, request, session
+from flask_session import Session
+from tempfile import mkdtemp
+from werkzeug.security import check_password_hash, generate_password_hash
+
+from helpers import apology, login_required
+
+# Configure application
 app = Flask(__name__)
+
+# Ensure templates are auto-reloaded
+app.config["TEMPLATES_AUTO_RELOAD"] = True
+
+
+# Configure session to use filesystem (instead of signed cookies)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
+
+# Configure sqlalchemy Library to use SQLite3 database
+db = SQLAlchemy("sqlite3:///project.db")
+
 
 @app.route("/")
 def home():
@@ -40,6 +62,32 @@ def login():
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("login.html")
+    
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    """Register user"""
+    if (request.method == "POST"):
+        email = request.form.get('email')
+        password = request.form.get('password')
+        confirm = request.form.get('confirm')
+
+        if not email:
+            return apology('email is required!')
+        elif not password:
+            return apology('password is required!')
+        elif not confirm:
+            return apology('password confirmation is required!')
+
+        hash = generate_password_hash(password)
+
+        try:
+            db.execute("INSERT INTO users (username, hash) VALUES (?, ?)", email, hash)
+            return redirect('/')
+        except:
+            return apology ('user has already been registered!')
+    else:
+        return render_template("register.html")
+
 
 
 @app.route("/logout")

@@ -18,10 +18,11 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///project.db'
 Session(app)
 
 # Configure sqlalchemy Library to use SQLite3 database
-db = SQLAlchemy("sqlite3:///project.db")
+db = SQLAlchemy(app)
 
 
 @app.route("/")

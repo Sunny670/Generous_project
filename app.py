@@ -27,7 +27,11 @@ db = SQLAlchemy(app)
 
 @app.route("/")
 def home():
-    return render_template("home.html")
+    return render_template("index.html")
+
+@app.route("/donate")
+def donate():
+    return render_template("donate.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
